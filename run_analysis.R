@@ -1,3 +1,5 @@
+#1. Get and merge the data
+#Loading raw data sets.#
 
 setwd("C:/Users/jorgea0618/Desktop/coursera/getting/week3")
 library(plyr)
@@ -22,6 +24,7 @@ dim(yDataSet)
 dim(subjectDataSet)
 
 #2. Extract only the measurements on the mean and standard deviation for each measurement.#
+#Data subset based on the logical vector to keep only desired columns, i.e. mean() and std().
 
 xDataSet_mean_std <- xDataSet[, grep("-(mean|std)\\(\\)", read.table("features.txt")[, 2])]
 names(xDataSet_mean_std) <- read.table("features.txt")[grep("-(mean|std)\\(\\)", read.table("features.txt")[, 2]), 2] 
@@ -59,10 +62,12 @@ names(singleDataSet) <- gsub('Freq$',"Frequency",names(singleDataSet))
 
 View(singleDataSet)
 
+
 #5. Creates a second, independent tidy data set with the average of each variable for each activity and each subject.#
 names(singleDataSet)
 
 Data2<-aggregate(. ~Subject + Activity, singleDataSet, mean)
 Data2<-Data2[order(Data2$Subject,Data2$Activity),]
 write.table(Data2, file = "tidydata.txt",row.name=FALSE)
+
 
